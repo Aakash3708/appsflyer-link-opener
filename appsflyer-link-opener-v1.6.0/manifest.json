@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "AppsFlyer Link Opener",
+  "version": "1.6.1",
+  "description": "Bulk-open AppsFlyer integrated-partner URLs with presets, extraction, ordering, tab groups, delayed loading, and bounded error/loading retry handling.",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "webNavigation",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://hq1.appsflyer.com/*"
+  ],
+  "action": {
+    "default_title": "AppsFlyer Link Opener",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://hq1.appsflyer.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "css": [
+        "content.css"
+      ]
+    }
+  ]
+}

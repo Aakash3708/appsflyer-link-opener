@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AppsFlyer Link Opener</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <h1>AppsFlyer Link Opener</h1>
+        <p>Bulk-build partner URLs, open tabs, retry transient failures, batch the load, and remember recent runs.</p>
+      </div>
+      <button id="settingsBtn" class="iconBtn" title="Settings">⚙</button>
+    </header>
+
+    <section class="card">
+      <div class="twoCol">
+        <div>
+          <label for="appSelect">App preset</label>
+          <select id="appSelect"></select>
+        </div>
+        <div>
+          <label for="appInput">App ID or AppsFlyer URL</label>
+          <input id="appInput" type="text" placeholder="com.msf.angelmobile">
+        </div>
+      </div>
+
+      <div class="labelRow">
+        <label for="pids">PIDs / URLs / text</label>
+        <button id="extractBtn" class="linkBtn">Extract AppsFlyer URLs</button>
+      </div>
+      <textarea id="pids" rows="9" placeholder="One PID per line, or paste AppsFlyer URLs / text containing them"></textarea>
+
+      <div id="extractedCard" class="extracted hidden">
+        <div class="extractedHeader">
+          <strong>Extracted AppsFlyer URLs</strong>
+          <span id="extractedCount">0</span>
+        </div>
+        <textarea id="extractedUrls" rows="4" readonly></textarea>
+        <button id="useExtractedBtn" class="secondary full">Use Extracted URLs</button>
+      </div>
+
+      <div class="toolbar">
+        <label class="check"><input id="ignoreDuplicates" type="checkbox" checked><span>Ignore duplicate URLs</span></label>
+        <label class="check"><input id="randomOrder" type="checkbox"><span>Random order</span></label>
+        <label class="check"><input id="reverseOrder" type="checkbox"><span>Reverse order</span></label>
+        <label class="check"><input id="searchQueries" type="checkbox"><span>Non-PID text → Google search</span></label>
+      </div>
+
+      <div class="openOptions">
+        <div>
+          <label for="tabGroup">Tab group</label>
+          <select id="tabGroup">
+            <option value="new">New Tab Group</option>
+            <option value="none">No Tab Group</option>
+          </select>
+        </div>
+        <div>
+          <label for="groupName">Group name</label>
+          <input id="groupName" type="text" placeholder="AppsFlyer - Angel One">
+        </div>
+      </div>
+
+      <div class="toolbar compact">
+        <label class="check"><input id="doNotLoad" type="checkbox"><span>Do not load tabs until selected</span></label>
+        <label class="check"><input id="preserveInput" type="checkbox" checked><span>Preserve input</span></label>
+      </div>
+
+      <div class="row actions">
+        <button id="buildBtn" class="secondary">Preview Links</button>
+        <button id="openBtn" class="primary">Open URLs (0)</button>
+      </div>
+
+      <div id="status" class="status"></div>
+      <pre id="preview" class="preview hidden"></pre>
+    </section>
+
+    <section class="card historyCard">
+      <div class="sectionHeader">
+        <div>
+          <h2>Recent runs</h2>
+          <span class="muted">Kept for 30 minutes, or until you remove them.</span>
+        </div>
+        <button id="clearHistoryBtn" class="ghost">Clear finished</button>
+      </div>
+      <div id="historyList" class="historyList">
+        <div class="empty">No recent runs.</div>
+      </div>
+    </section>
+
+    <section id="settings" class="card hidden">
+      <div class="sectionHeader">
+        <div>
+          <h2>Settings</h2>
+          <span class="muted">Persistent local settings. Batch controls live here, not on the main screen.</span>
+        </div>
+        <button id="closeSettingsBtn" class="ghost">Close</button>
+      </div>
+
+      <div class="settingsBlock">
+        <h3>Batch opening</h3>
+        <div class="twoCol">
+          <div>
+            <label for="batchSizeSetting">Batch size</label>
+            <input id="batchSizeSetting" type="number" min="1" max="500" step="1">
+          </div>
+          <div>
+            <label for="batchDelaySetting">Delay between batches (seconds)</label>
+            <input id="batchDelaySetting" type="number" min="0" max="300" step="1">
+          </div>
+        </div>
+        <p class="settingHint">Default: 7 tabs per batch, 10 seconds between batches.</p>
+        <button id="saveBatchSettingsBtn" class="secondary full">Save batch settings</button>
+      </div>
+
+      <div class="settingsBlock">
+        <h3>App presets</h3>
+        <div id="presetList"></div>
+        <div class="row">
+          <input id="newPresetName" type="text" placeholder="Preset name">
+          <input id="newPresetId" type="text" placeholder="App ID">
+        </div>
+        <button id="addPresetBtn" class="secondary full">Add preset</button>
+      </div>
+
+      <div class="settingsBlock">
+        <h3>Remembered work</h3>
+        <p class="settingHint">The last PID/URL input, selected app, generated links, and UI choices are remembered locally.</p>
+        <button id="clearWorkspaceBtn" class="ghost full">Clear remembered work</button>
+      </div>
+    </section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
